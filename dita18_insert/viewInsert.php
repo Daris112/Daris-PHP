@@ -49,7 +49,7 @@
                 <td><?php echo $filePrice;?></td>
                 <td><?php echo $fileQuantity;?></td>
                 <td><?php echo $description;?></td>
-                <td><img src="../uploads/<?php echo $fileUpload;?>" width = "80" height = "60"></td>
+                <td><img src="uploads/<?php echo $fileUpload;?>" width = "80" height = "60"></td>
             </tr>
     <?php
         }
