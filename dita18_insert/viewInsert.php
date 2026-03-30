@@ -5,27 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Insert</title>
     <style>
-        table,
-        td,
-        th {
-            border: 2px solid black;
-            border-collapse: collapse;
-            width: 500px;
-            height: 50px;
-        }
+    body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    padding:20px;
+}
+
+/* container */
+.products{
+    display:grid;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    gap:20px;
+}
+
+/* card */
+.product{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.product:hover{
+    transform:translateY(-5px);
+}
+
+/* image */
+.product img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+/* title */
+.product h3{
+    margin:10px 0 5px;
+}
+
+/* price */
+.price{
+    color:#007bff;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.quantity{
+    color:#555;
+    margin:5px 0;
+}
+
+.description{
+    color:#666;
+    font-size:14px;
+}
     </style>
 </head>
 
 <body>
-    <table>
-        <tr>
-            <td>File Id</td>
-            <td>File Name</td>
-            <td>File Price</td>
-            <td>File Quantity</td>
-            <td>Description</td>
-            <td>File Upload</td>
-        </tr>
+    <div class="products">
+      
 <?php
     try{
         include('connect.php');
@@ -43,14 +83,24 @@
 
             ?>
 
-            <tr>
-                <td><?php echo $fileId;?></td>
-                <td><?php echo $fileName;?></td>
-                <td><?php echo $filePrice;?></td>
-                <td><?php echo $fileQuantity;?></td>
-                <td><?php echo $description;?></td>
-                <td><img src="uploads/<?php echo $fileUpload;?>" width = "80" height = "60"></td>
-            </tr>
+        <div class="product">
+
+            <img src="uploads/<?php echo $fileUpload;?>">
+
+            <h3><?php echo $fileName;?></h3>
+
+            <div class="price">
+            $<?php echo $filePrice;?>
+            </div>
+
+            <div class="quantity">
+            Quantity: <?php echo $fileQuantity;?>
+            </div>
+
+            <div class="description">
+            <?php echo $description;?>
+            </div>
+        </div>     
     <?php
         }
 
@@ -59,5 +109,5 @@
         echo'Connection failed:'.$e-> getMessage();
     }
 ?>
-</table>
+</div>
 </body>
