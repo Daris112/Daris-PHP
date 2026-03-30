@@ -11,14 +11,14 @@
     padding:20px;
 }
 
-/* container */
+
 .products{
     display:grid;
     grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
     gap:20px;
 }
 
-/* card */
+
 .product{
     background:white;
     padding:15px;
@@ -31,20 +31,20 @@
     transform:translateY(-5px);
 }
 
-/* image */
+
 .product img{
     width:100%;
-    height:180px;
+    height:200px;
     object-fit:cover;
     border-radius:8px;
 }
 
-/* title */
+
 .product h3{
     margin:10px 0 5px;
 }
 
-/* price */
+
 .price{
     color:#007bff;
     font-weight:bold;
@@ -87,7 +87,10 @@
 
             <img src="uploads/<?php echo $fileUpload;?>">
 
-            <h3><?php echo $fileName;?></h3>
+            <h3>
+                <a href="produkti.php?id=<?php echo $fileId ?>">
+                <?php echo $fileName;?>
+            </h3>
 
             <div class="price">
             $<?php echo $filePrice;?>
