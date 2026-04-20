@@ -1,15 +1,5 @@
+
 <?php include('includes/header.php'); ?>
-
-<?php
-session_start();
-
-// If the session variable is not set, redirect to login
-if (!isset($_SESSION['username'])) {
-    header("location: login.php");
-    exit;
-}
-?>
-
 <div class="mb-8">
     <h2 class="text-3xl font-bold text-slate-800 tracking-tight">User Management</h2>
     <p class="text-slate-500">Manage administrator roles and customer accounts.</p>
@@ -40,7 +30,7 @@ if (!isset($_SESSION['username'])) {
                     <div class="flex items-center space-x-3">
                         <img src="https://ui-avatars.com/api/?name=Daris+P&background=6366f1&color=fff" class="w-10 h-10 rounded-full border-2 border-white shadow-sm">
                         <div>
-                            <div class="font-bold text-slate-800">Daris P.</div>
+                            <div class="font-bold text-slate-800"><?php echo htmlspecialchars($_SESSION['username']); ?></div>
                             <div class="text-xs text-slate-400 font-medium">daris@example.com</div>
                         </div>
                     </div>

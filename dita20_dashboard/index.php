@@ -1,27 +1,13 @@
-<?php include('includes/header.php'); ?>
 
-<?php
-    session_start();
-
-    
-    if(!isset($_SESSION['username'])){
-      
-        
-        header('location: login.php');
-    }
-    else{
-?>
 
 <?php
 session_start();
-
-// If the session variable is not set, redirect to login
 if (!isset($_SESSION['username'])) {
     header("location: login.php");
-    exit;
-}
-?>
+} else {
 
+?>
+<?php include('includes/header.php'); ?>
 <div class="mb-10">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
@@ -148,7 +134,7 @@ if (!isset($_SESSION['username'])) {
     </div>
 
 </div>
+<?php include('includes/footer.php'); ?>
 
 <?php } ?>
 
-<?php include('includes/footer.php'); ?>

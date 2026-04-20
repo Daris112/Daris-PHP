@@ -16,7 +16,7 @@
 
         <div class="flex items-center gap-4 group cursor-pointer">
             <div class="text-right">
-                <p class="text-sm font-black text-slate-800 leading-none">Daris P.</p>
+                <p class="text-sm font-black text-slate-800 leading-none"><?php  echo htmlspecialchars($_SESSION['username']); ?></p>
                 <p class="text-[10px] font-bold text-blue-600 uppercase mt-1">Super Admin</p>
             </div>
             <img src="https://ui-avatars.com/api/?name=Daris+P&background=0D8ABC&color=fff" 
