@@ -1,5 +1,15 @@
 <?php include('includes/header.php'); ?>
 
+<?php
+session_start();
+
+// If the session variable is not set, redirect to login
+if (!isset($_SESSION['username'])) {
+    header("location: login.php");
+    exit;
+}
+?>
+
 <div class="mb-8 flex justify-between items-end">
     <div>
         <h2 class="text-3xl font-bold text-slate-800 tracking-tight">Product Inventory</h2>

@@ -21,14 +21,16 @@ if (isset($_POST['login'])){
         $checkQuery -> execute();
         $result = $checkQuery->fetch();
 
-        if ($result && password_verify($password, $result['password'])){
+       if ($result && password_verify($password, $result['password'])){
+            // Start the session and save the username
+            session_start();
+            $_SESSION['username'] = $result['username'];
             
             echo "<script>alert('Login successful');</script>";
             echo "<script>window.open('admin.php','_self');</script>";
         } else {
             array_push($errors, "Invalid username or password");
         }
-
     
     }
 }
