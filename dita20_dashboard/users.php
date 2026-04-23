@@ -1,54 +1,68 @@
+<?php
+include('includes/connect.php');
+include('includes/header.php');
 
-<?php include('includes/header.php'); ?>
-<div class="mb-8">
-    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">User Management</h2>
-    <p class="text-slate-500">Manage administrator roles and customer accounts.</p>
-</div>
+// Fetch all users from the database
+$query = "SELECT id, username, email, role, created_at FROM users ORDER BY id DESC";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$users = $stmt->fetchAll();
+?>
 
-<div class="glass-card rounded-3xl shadow-xl overflow-hidden border border-white">
-    <div class="p-6 border-b border-slate-100 bg-white/50 flex justify-between items-center">
-        <div class="relative w-64">
-            <i class="fas fa-search absolute left-3 top-2.5 text-slate-300"></i>
-            <input type="text" placeholder="Find user..." class="pl-10 pr-4 py-2 w-full rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-blue-500">
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-black text-slate-800">User Management</h1>
+            <p class="text-slate-500">Manage administrative access and permissions.</p>
         </div>
-        <button class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold">INVITE USER</button>
+        <a href="create_users.php" class="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200">
+            <i class="fas fa-user-plus mr-2"></i> Add New Admin
+        </a>
     </div>
 
-    <table class="w-full text-left border-collapse">
-        <thead>
-            <tr class="bg-slate-50/50 text-slate-500 text-xs uppercase tracking-widest font-black">
-                <th class="p-5">User</th>
-                <th class="p-5">Role</th>
-                <th class="p-5">Last Login</th>
-                <th class="p-5">Status</th>
-                <th class="p-5 text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-100 bg-white">
-            <tr class="hover:bg-slate-50 transition-all">
-                <td class="p-5">
-                    <div class="flex items-center space-x-3">
-                        <img src="https://ui-avatars.com/api/?name=Daris+P&background=6366f1&color=fff" class="w-10 h-10 rounded-full border-2 border-white shadow-sm">
-                        <div>
-                            <div class="font-bold text-slate-800"><?php echo htmlspecialchars($_SESSION['username']); ?></div>
-                            <div class="text-xs text-slate-400 font-medium">daris@example.com</div>
+    <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-100">
+                    <th class="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest">Administrator</th>
+                    <th class="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest">Email Address</th>
+                    <th class="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest">Role</th>
+                    <th class="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest">Joined Date</th>
+                    <th class="px-8 py-5 text-xs font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+                <?php foreach($users as $user): ?>
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-8 py-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">
+                                <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
+                            </div>
+                            <span class="font-bold text-slate-700"><?php echo htmlspecialchars($user['username']); ?></span>
                         </div>
-                    </div>
-                </td>
-                <td class="p-5">
-                    <span class="text-xs font-bold text-slate-600 px-2 py-1 bg-slate-100 rounded">Super Admin</span>
-                </td>
-                <td class="p-5 text-slate-500 text-sm">2 hours ago</td>
-                <td class="p-5">
-                    <span class="w-2 h-2 rounded-full bg-green-500 inline-block mr-1"></span>
-                    <span class="text-xs font-bold text-green-600 uppercase">Online</span>
-                </td>
-                <td class="p-5 text-center">
-                    <button class="text-slate-400 hover:text-red-500 transition"><i class="fas fa-user-minus"></i></button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                    <td class="px-8 py-5 text-sm text-slate-500"><?php echo htmlspecialchars($user['email']); ?></td>
+                    <td class="px-8 py-5">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-blue-50 text-blue-600">
+                            <?php echo htmlspecialchars($user['role']); ?>
+                        </span>
+                    </td>
+                    <td class="px-8 py-5 text-sm text-slate-400">
+                        <?php echo date('M d, Y', strtotime($user['created_at'])); ?>
+                    </td>
+                    <td class="px-8 py-5 text-right">
+                        <a href="delete_users.php?id=<?php echo $user['id']; ?>" 
+                           onclick="return confirm('Are you sure you want to remove this admin?')"
+                           class="text-red-400 hover:text-red-600 transition-colors px-4">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?php include('includes/footer.php'); ?>

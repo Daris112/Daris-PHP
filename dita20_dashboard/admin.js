@@ -66,3 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     };
 });
+
+// --- 4. Auto-trigger Toast based on URL message ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const msg = urlParams.get('msg');
+
+    if (msg) {
+        if (msg === 'added') showToast('Successfully added to database!');
+        if (msg === 'updated') showToast('Information updated successfully!');
+        if (msg === 'deleted') showToast('Item has been removed.', 'error');
+        if (msg === 'user_added') showToast('New administrator created!');
+        
+        // Optional: Clean the URL so the toast doesn't pop up again if they refresh
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }

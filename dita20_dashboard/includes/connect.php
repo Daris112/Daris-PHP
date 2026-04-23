@@ -2,13 +2,16 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
+$dbname = "prizren"; // Make sure this is exactly what you named it in phpMyAdmin
 
-try{
-    $conn = new PDO ("mysql:host = $servername;dbname=prizren",$username,$password);
-    $conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+try {
+    // FIX: Removed the spaces around "host="
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     
-
-}catch(PDOException $e){
-    echo "Connected failed: ". $e->getMessage();
+    // Set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+} catch(PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
 }
 ?>
