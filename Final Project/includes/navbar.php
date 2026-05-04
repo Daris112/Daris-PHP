@@ -16,7 +16,7 @@
         <div style="display: flex; gap: 20px; align-items: center;">
             <a href="#" style="text-decoration: none; color: #333;">🔍</a>
             <?php if(isset($_SESSION['user_id'])): ?>
-                <a href="profile.php" style="text-decoration: none; color: #333;">👤</a>
+                <a href="login.php" style="text-decoration: none; color: #333;">👤</a>
                 <a href="logout.php" style="font-size: 11px; color: #888; text-decoration: none; letter-spacing: 1px;">LOGOUT</a>
             <?php else: ?>
                 <a href="login.php" style="text-decoration: none; color: #333;">👤</a>
