@@ -11,8 +11,9 @@ if (session_status() === PHP_SESSION_NONE) {
 $currentPage = basename($_SERVER['PHP_SELF']);
 
 // 1. Security Guard
-// If the user is NOT logged in and is NOT already on the login page:
-if (!isset($_SESSION['email'])) {
+// Only logged-in admins can access the admin layout.
+$role = strtolower(trim($_SESSION['role'] ?? ''));
+if (!isset($_SESSION['user_id']) || $role !== 'admin') {
     // If we are inside the /admin/ folder, we go UP one level to find the root login
     header("Location: ../login.php"); 
     exit();
@@ -20,7 +21,7 @@ if (!isset($_SESSION['email'])) {
 
 // 2. Database Connection
 // This ensures $pdo is available for your dashboard stats
-require_once('connect.php'); 
+require_once __DIR__ . '/connect.php'; 
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -2,9 +2,10 @@
 include('includes/connect.php');
 session_start();
 
-// Security: Check if user is logged in using email (since 'username' column doesn't exist)
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
+// Security: only logged-in admins can delete products.
+$role = strtolower(trim($_SESSION['role'] ?? ''));
+if (!isset($_SESSION['user_id']) || $role !== 'admin') {
+    header("Location: ../login.php");
     exit();
 }
 

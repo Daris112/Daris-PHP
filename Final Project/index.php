@@ -4,6 +4,7 @@ include 'admin/includes/connect.php';
 include 'includes/header.php'; 
 ?>
 <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
+
 <header class="hero">
     <div class="hero-content">
         <span class="label">NEW SEASON</span>
@@ -35,7 +36,16 @@ include 'includes/header.php';
                     <div class="product-info">
                         <h3><?php echo strtoupper($product['name']); ?></h3>
                         <p class="price">$<?php echo number_format($product['price'], 2); ?></p>
-                        <a href="product.php?id=<?php echo $product['id']; ?>" class="add-btn">+ ADD TO CART</a>
+                        
+                        <button 
+                            class="add-to-cart-btn add-btn" 
+                            data-id="<?php echo htmlspecialchars($product['id']); ?>" 
+                            data-name="<?php echo htmlspecialchars($product['name']); ?>" 
+                            data-price="<?php echo htmlspecialchars($product['price']); ?>" 
+                            data-image="assets/img/<?php echo htmlspecialchars($product['image_url']); ?>"
+                            style="cursor: pointer; border: none; background: none; width: 100%; text-align: left;">
+                            + ADD TO CART
+                        </button>
                     </div>
                 </div>
             <?php 
@@ -46,5 +56,7 @@ include 'includes/header.php';
         ?>
     </div>
 </section>
+
+<script src="assets/js/cart.js"></script>
 
 <?php include 'includes/footer.php'; ?>
