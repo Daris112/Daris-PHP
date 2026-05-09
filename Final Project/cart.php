@@ -6,44 +6,97 @@
     <title>MAISON | Your Cart</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --black: #000; --gray: #f9f9f9; --border: #eee; --text-alt: #888; }
+        :root {
+            --black: #05070d;
+            --bg-dark: #080a10;
+            --panel: rgba(15, 18, 30, 0.86);
+            --panel-light: rgba(255, 255, 255, 0.07);
+            --accent: #4fd1c5;
+            --accent-soft: rgba(79, 209, 197, 0.18);
+            --text-main: #f6f1e8;
+            --text-alt: #a5a8b7;
+            --border: rgba(255, 255, 255, 0.12);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #fff; color: var(--black); padding: 40px 5%; }
+        body {
+            background:
+                radial-gradient(circle at 20% 10%, rgba(79, 209, 197, 0.16), transparent 26%),
+                radial-gradient(circle at 86% 18%, rgba(88, 101, 242, 0.14), transparent 30%),
+                linear-gradient(135deg, #05070d 0%, #101320 52%, #07090f 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 5%;
+            overflow-x: hidden;
+        }
 
         .cart-header { 
             display: flex; justify-content: space-between; align-items: flex-end;
             border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 40px;
+            animation: fadeSlideDown 0.7s ease both;
         }
         .cart-header h1 { font-size: 32px; font-weight: 900; letter-spacing: -1px; }
-        .cart-header span { font-size: 12px; font-weight: 700; color: var(--text-alt); text-transform: uppercase; }
+        .cart-header span { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; }
 
-        .cart-table { width: 100%; border-collapse: collapse; }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
+            animation: fadeSlideUp 0.7s ease 0.15s both;
+        }
         .cart-table th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-alt); padding-bottom: 20px; }
         
-        .cart-item { border-bottom: 1px solid var(--border); }
-        .item-info { display: flex; align-items: center; padding: 25px 0; }
-        .item-image { width: 80px; height: 100px; background: var(--gray); border-radius: 8px; margin-right: 20px; object-fit: cover; }
+        .cart-item { border-bottom: 1px solid var(--border); transition: background 0.25s ease, transform 0.25s ease; }
+        .cart-item:hover { background: rgba(255, 255, 255, 0.04); transform: translateX(4px); }
+        .cart-table th, .cart-table td { padding: 18px 20px; }
+        .item-info { display: flex; align-items: center; padding: 8px 0; }
+        .item-image { width: 80px; height: 100px; background: var(--panel-light); border-radius: 10px; margin-right: 20px; object-fit: cover; border: 1px solid var(--border); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .cart-item:hover .item-image { transform: scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32); }
         .item-details h3 { font-size: 15px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
         .item-details p { font-size: 12px; color: var(--text-alt); }
 
         .price, .quantity, .total { font-size: 14px; font-weight: 400; }
-        .remove-btn { color: #ff4d4d; text-decoration: none; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .remove-btn { color: #ff8f8f; text-decoration: none; font-size: 11px; font-weight: 700; text-transform: uppercase; transition: color 0.25s ease; }
+        .remove-btn:hover { color: #ffb3b3; }
 
-        .cart-summary { margin-top: 50px; display: flex; justify-content: flex-end; }
-        .summary-box { width: 300px; }
+        .cart-summary { margin-top: 50px; display: flex; justify-content: flex-end; animation: fadeSlideUp 0.7s ease 0.25s both; }
+        .summary-box { width: 300px; background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 24px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34); }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; }
-        .total-row { border-top: 1px solid var(--black); padding-top: 15px; font-weight: 900; font-size: 18px; }
+        .total-row { border-top: 1px solid var(--border); padding-top: 15px; font-weight: 900; font-size: 18px; }
 
         .checkout-btn { 
-            width: 100%; padding: 20px; background: var(--black); color: #fff; 
+            width: 100%; padding: 20px; background: linear-gradient(135deg, #4fd1c5 0%, #9ff5eb 52%, #258f9a 100%); color: #080a10; 
             border: none; border-radius: 12px; font-weight: 700; font-size: 12px; 
-            letter-spacing: 2px; cursor: pointer; margin-top: 20px; transition: 0.3s;
+            letter-spacing: 2px; cursor: pointer; margin-top: 20px; transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+            box-shadow: 0 14px 32px rgba(79, 209, 197, 0.22);
         }
-        .checkout-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+        .checkout-btn:hover { filter: brightness(1.08); transform: translateY(-3px) scale(1.01); box-shadow: 0 20px 44px rgba(79, 209, 197, 0.34); }
         
-        .empty-cart { text-align: center; padding: 100px 0; }
+        .empty-cart { text-align: center; padding: 100px 0; animation: fadeSlideUp 0.7s ease 0.15s both; }
         .empty-cart p { color: var(--text-alt); margin-bottom: 20px; }
-        .shop-link { color: var(--black); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--black); }
+        .shop-link { color: var(--accent); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent); transition: color 0.25s ease, border-color 0.25s ease; }
+        .shop-link:hover { color: #9ff5eb; border-color: #9ff5eb; }
+
+        @keyframes fadeSlideDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 760px) {
+            body { padding: 28px 18px; }
+            .cart-header { align-items: flex-start; flex-direction: column; gap: 8px; }
+            .cart-table { display: block; overflow-x: auto; }
+            .cart-summary { justify-content: stretch; }
+            .summary-box { width: 100%; }
+        }
     </style>
 </head>
 <body>
