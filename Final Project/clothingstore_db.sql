@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 04, 2026 at 12:39 PM
+-- Generation Time: May 14, 2026 at 02:18 PM
 -- Server version: 8.4.3
--- PHP Version: 8.3.28
+-- PHP Version: 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -50,9 +50,26 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 CREATE TABLE `orders` (
   `id` int NOT NULL,
   `user_id` int DEFAULT NULL,
+  `shipping_address` text,
+  `city` varchar(100) DEFAULT NULL,
+  `zip_code` varchar(20) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `status` enum('pending','shipped','delivered') DEFAULT 'pending',
   `order_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -67,8 +84,16 @@ CREATE TABLE `products` (
   `price` decimal(10,2) NOT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `description` text,
+  `sizes` varchar(255) DEFAULT 'S,M,L,XL',
   `category_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `price`, `image_url`, `description`, `sizes`, `category_id`) VALUES
+(1, 'Luxury silk shirt', 20.00, '', '', 'S,M,L,XL', 2);
 
 -- --------------------------------------------------------
 
@@ -93,7 +118,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phone`, `address`, `role`, `created_at`) VALUES
-(1, 'daris', 'hodza', 'darishodza12@gamul.com', '$2y$10$yKzUwx8/wgXIBvy.0iLwb.sBMGw9dSfK16Yj1MTNXPXhusgKaBaGO', NULL, NULL, 'admin', '2026-05-04 12:09:56');
+(1, 'daris', 'hodza', 'darishodza12@gmail.com', '$2y$10$yKzUwx8/wgXIBvy.0iLwb.sBMGw9dSfK16Yj1MTNXPXhusgKaBaGO', NULL, NULL, 'admin', '2026-05-04 12:09:56'),
+(2, 'Eldar', 'Hodza', 'hodzaeldar13@gmail.com', '$2y$10$5ll8/d8c.fnAFLfAN4rUG.38wZ2LmdYt5w7KM2WkK/tyC2jpzJQHi', NULL, NULL, 'customer', '2026-05-04 14:44:31'),
+(3, 'Emil', 'Hodza', 'hodzaemil@gmail.com', '$2y$10$HDV1lQY0dwFKe9U8LCjQj.MoTOy.r/PgaoO1mSc7KvYtCYxy525k6', NULL, NULL, 'customer', '2026-05-07 15:06:05');
 
 --
 -- Indexes for dumped tables
@@ -111,6 +138,14 @@ ALTER TABLE `categories`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_order` (`order_id`),
+  ADD KEY `fk_product` (`product_id`);
 
 --
 -- Indexes for table `products`
@@ -143,16 +178,22 @@ ALTER TABLE `orders`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -163,6 +204,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `fk_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
 -- Constraints for table `products`

@@ -7,22 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --black: #05070d;
-            --bg-dark: #080a10;
-            --panel: rgba(15, 18, 30, 0.86);
-            --panel-light: rgba(255, 255, 255, 0.07);
-            --accent: #4fd1c5;
-            --accent-soft: rgba(79, 209, 197, 0.18);
-            --text-main: #f6f1e8;
-            --text-alt: #a5a8b7;
-            --border: rgba(255, 255, 255, 0.12);
+            --black: #121212;
+            --bg-dark: #121212;
+            --panel: #1a1a1a;
+            --panel-light: #202020;
+            --accent: #ffffff;
+            --accent-soft: rgba(255, 255, 255, 0.10);
+            --text-main: #ffffff;
+            --text-alt: #666666;
+            --border: #2a2a2a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body {
-            background:
-                radial-gradient(circle at 20% 10%, rgba(79, 209, 197, 0.16), transparent 26%),
-                radial-gradient(circle at 86% 18%, rgba(88, 101, 242, 0.14), transparent 30%),
-                linear-gradient(135deg, #05070d 0%, #101320 52%, #07090f 100%);
+            background: #121212;
             color: var(--text-main);
             min-height: 100vh;
             padding: 40px 5%;
@@ -59,8 +56,8 @@
         .item-details p { font-size: 12px; color: var(--text-alt); }
 
         .price, .quantity, .total { font-size: 14px; font-weight: 400; }
-        .remove-btn { color: #ff8f8f; text-decoration: none; font-size: 11px; font-weight: 700; text-transform: uppercase; transition: color 0.25s ease; }
-        .remove-btn:hover { color: #ffb3b3; }
+        .remove-btn { color: #666666; text-decoration: none; font-size: 11px; font-weight: 700; text-transform: uppercase; transition: color 0.25s ease; }
+        .remove-btn:hover { color: #ffffff; }
 
         .cart-summary { margin-top: 50px; display: flex; justify-content: flex-end; animation: fadeSlideUp 0.7s ease 0.25s both; }
         .summary-box { width: 300px; background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 24px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34); }
@@ -68,17 +65,18 @@
         .total-row { border-top: 1px solid var(--border); padding-top: 15px; font-weight: 900; font-size: 18px; }
 
         .checkout-btn { 
-            width: 100%; padding: 20px; background: linear-gradient(135deg, #4fd1c5 0%, #9ff5eb 52%, #258f9a 100%); color: #080a10; 
+            display: block; text-align: center; text-decoration: none;
+            width: 100%; padding: 20px; background: #ffffff; color: #000000; 
             border: none; border-radius: 12px; font-weight: 700; font-size: 12px; 
             letter-spacing: 2px; cursor: pointer; margin-top: 20px; transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
-            box-shadow: 0 14px 32px rgba(79, 209, 197, 0.22);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
         }
-        .checkout-btn:hover { filter: brightness(1.08); transform: translateY(-3px) scale(1.01); box-shadow: 0 20px 44px rgba(79, 209, 197, 0.34); }
+        .checkout-btn:hover { color: #000000; filter: brightness(0.92); transform: translateY(-3px) scale(1.01); box-shadow: 0 20px 44px rgba(0, 0, 0, 0.42); }
         
         .empty-cart { text-align: center; padding: 100px 0; animation: fadeSlideUp 0.7s ease 0.15s both; }
         .empty-cart p { color: var(--text-alt); margin-bottom: 20px; }
         .shop-link { color: var(--accent); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent); transition: color 0.25s ease, border-color 0.25s ease; }
-        .shop-link:hover { color: #9ff5eb; border-color: #9ff5eb; }
+        .shop-link:hover { color: #ffffff; border-color: #ffffff; }
 
         @keyframes fadeSlideDown {
             from { opacity: 0; transform: translateY(-12px); }
@@ -158,7 +156,7 @@
                     <span>Total</span>
                     <span>$<?php echo number_format($total, 2); ?></span>
                 </div>
-                <button class="checkout-btn">PROCEED TO CHECKOUT</button>
+                <a href="checkout.php" class="checkout-btn">PROCEED TO CHECKOUT</a>
             </div>
         </div>
     <?php endif; ?>

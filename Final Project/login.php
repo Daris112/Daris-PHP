@@ -54,15 +54,15 @@ if (isset($_POST['login'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-black: #05070d;
-            --bg-dark: #080a10;
-            --panel: rgba(15, 18, 30, 0.86);
-            --panel-light: rgba(255, 255, 255, 0.08);
-            --accent: #4fd1c5;
-            --accent-soft: rgba(79, 209, 197, 0.18);
-            --text-main: #f6f1e8;
-            --text-muted: #a5a8b7;
-            --border: rgba(255, 255, 255, 0.12);
+            --primary-black: #121212;
+            --bg-dark: #121212;
+            --panel: #1a1a1a;
+            --panel-light: #202020;
+            --accent: #ffffff;
+            --accent-soft: rgba(255, 255, 255, 0.10);
+            --text-main: #ffffff;
+            --text-muted: #666666;
+            --border: #2a2a2a;
         }
 
         * {
@@ -73,10 +73,7 @@ if (isset($_POST['login'])) {
         }
 
         body {
-            background:
-                radial-gradient(circle at 20% 20%, rgba(79, 209, 197, 0.16), transparent 28%),
-                radial-gradient(circle at 80% 10%, rgba(88, 101, 242, 0.16), transparent 30%),
-                linear-gradient(135deg, #05070d 0%, #101320 52%, #07090f 100%);
+            background: #121212;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -87,30 +84,7 @@ if (isset($_POST['login'])) {
         }
 
         body::before,
-        body::after {
-            content: "";
-            position: fixed;
-            width: 360px;
-            height: 360px;
-            border-radius: 50%;
-            filter: blur(12px);
-            opacity: 0.5;
-            pointer-events: none;
-            animation: floatGlow 9s ease-in-out infinite alternate;
-        }
-
-        body::before {
-            background: rgba(79, 209, 197, 0.13);
-            top: -120px;
-            left: -80px;
-        }
-
-        body::after {
-            background: rgba(89, 99, 140, 0.18);
-            right: -110px;
-            bottom: -130px;
-            animation-delay: -3s;
-        }
+        body::after { display: none; }
 
         .login-card {
             position: relative;
@@ -129,7 +103,7 @@ if (isset($_POST['login'])) {
 
         .login-card:hover {
             transform: translateY(-6px);
-            border-color: rgba(79, 209, 197, 0.34);
+            border-color: #ffffff;
             box-shadow: 0 38px 110px rgba(0, 0, 0, 0.58);
         }
 
@@ -141,7 +115,7 @@ if (isset($_POST['login'])) {
             color: var(--text-main);
             margin-bottom: 8px;
             display: block;
-            text-shadow: 0 0 26px rgba(79, 209, 197, 0.18);
+            text-shadow: none;
             animation: fadeSlideDown 0.7s ease 0.15s both;
         }
 
@@ -158,8 +132,8 @@ if (isset($_POST['login'])) {
         }
 
         .error-container {
-            background: rgba(240, 62, 62, 0.12);
-            border-left: 3px solid #ff6b6b;
+            background: #202020;
+            border-left: 3px solid #ffffff;
             padding: 12px 16px;
             margin-bottom: 25px;
             border-radius: 8px;
@@ -167,7 +141,7 @@ if (isset($_POST['login'])) {
         }
 
         .error-text {
-            color: #ffb3b3;
+            color: #ffffff;
             font-size: 13px;
             font-weight: 600;
         }
@@ -199,8 +173,8 @@ if (isset($_POST['login'])) {
         .form-group input {
             width: 100%;
             padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: var(--panel-light);
+            border: 1.5px solid var(--border);
             border-radius: 16px;
             font-size: 14px;
             color: var(--text-main);
@@ -209,7 +183,7 @@ if (isset($_POST['login'])) {
         }
 
         .form-group input::placeholder {
-            color: rgba(246, 241, 232, 0.36);
+            color: #666666;
         }
 
         .form-group:hover label {
@@ -217,13 +191,13 @@ if (isset($_POST['login'])) {
         }
 
         .form-group:hover input {
-            background: rgba(255, 255, 255, 0.09);
-            border-color: rgba(79, 209, 197, 0.28);
+            background: #1a1a1a;
+            border-color: #ffffff;
             transform: translateY(-2px);
         }
 
         .form-group input:focus {
-            background: rgba(255, 255, 255, 0.11);
+            background: #1a1a1a;
             border-color: var(--accent);
             box-shadow: 0 0 0 4px var(--accent-soft), 0 16px 30px rgba(0, 0, 0, 0.22);
             transform: translateY(-2px);
@@ -232,8 +206,8 @@ if (isset($_POST['login'])) {
         .login-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #4fd1c5 0%, #9ff5eb 52%, #258f9a 100%);
-            color: #080a10;
+            background: #ffffff;
+            color: #000000;
             border: none;
             border-radius: 16px;
             font-size: 13px;
@@ -243,14 +217,14 @@ if (isset($_POST['login'])) {
             cursor: pointer;
             transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
             margin-top: 10px;
-            box-shadow: 0 14px 32px rgba(79, 209, 197, 0.22);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
             animation: fadeSlideUp 0.7s ease 0.55s both;
         }
 
         .login-btn:hover {
-            filter: brightness(1.08);
+            filter: brightness(0.92);
             transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 20px 44px rgba(79, 209, 197, 0.34);
+            box-shadow: 0 20px 44px rgba(0, 0, 0, 0.42);
         }
 
         .login-btn:active {
@@ -288,7 +262,7 @@ if (isset($_POST['login'])) {
         }
 
         .footer-links a:hover {
-            color: #9ff5eb;
+            color: #ffffff;
         }
 
         .footer-links a:hover::after {
