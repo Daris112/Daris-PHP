@@ -30,11 +30,17 @@ include 'includes/header.php';
             ?>
                 <div class="product-card">
                     <div class="product-img-wrapper">
-                        <img src="assets/img/<?php echo $product['image_url']; ?>" alt="<?php echo $product['name']; ?>">
+                        <a href="product.php?id=<?php echo htmlspecialchars($product['id']); ?>" class="product-image-link">
+                            <img src="assets/img/<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        </a>
                         <button class="wishlist-btn">&hearts;</button>
                     </div>
                     <div class="product-info">
-                        <h3><?php echo strtoupper($product['name']); ?></h3>
+                        <h3>
+                            <a href="product.php?id=<?php echo htmlspecialchars($product['id']); ?>" class="product-title-link">
+                                <?php echo htmlspecialchars(strtoupper($product['name'])); ?>
+                            </a>
+                        </h3>
                         <p class="price">$<?php echo number_format($product['price'], 2); ?></p>
                         
                         <button 
