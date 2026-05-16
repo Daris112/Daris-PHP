@@ -1,6 +1,7 @@
 <?php
 // 1. DATABASE AND LOGIC FIRST
 include('includes/connect.php');
+include('../includes/product_images.php');
 
 // Fetch categories to populate the dropdown dynamically
 $cat_stmt = $pdo->query("SELECT * FROM categories");
@@ -10,10 +11,16 @@ if (isset($_POST['save_product'])) {
     $name = trim($_POST['name']);
     $category_id = $_POST['category_id']; // Using ID to match your FK constraint
     $price = $_POST['price'];
-    $image_url = trim($_POST['image_url']); // Match your image_url column
     $description = trim($_POST['description']); // Match your description column
+    $uploadError = null;
+    $image_url = product_image_filename_from_upload('product_image', $uploadError);
 
-    try {
+    if ($image_url === false) {
+        $error = $uploadError;
+    } else {
+        $image_url = $image_url ?? '';
+
+        try {
         // Query updated to match your table: name, price, image_url, description, category_id
         $query = "INSERT INTO products (name, price, image_url, description, category_id) 
                   VALUES (:name, :price, :image_url, :description, :category_id)";
@@ -30,8 +37,9 @@ if (isset($_POST['save_product'])) {
         header("Location: inventory.php?msg=added");
         exit();
         
-    } catch (PDOException $e) {
-        $error = "Database Error: " . $e->getMessage();
+        } catch (PDOException $e) {
+            $error = "Database Error: " . $e->getMessage();
+        }
     }
 }
 
@@ -48,7 +56,7 @@ include('includes/header.php');
         </div>
     <?php endif; ?>
 
-    <form method="POST" class="space-y-6">
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
         <div>
             <label class="block text-xs font-black uppercase text-slate-400 mb-2 tracking-widest">Product Name</label>
             <input type="text" name="name" required placeholder="e.g. Luxury Silk Shirt"
@@ -72,10 +80,10 @@ include('includes/header.php');
         </div>
 
         <div>
-            <label class="block text-xs font-black uppercase text-slate-400 mb-2 tracking-widest">Image Filename</label>
-            <input type="text" name="image_url" placeholder="e.g. product1.jpg"
+            <label class="block text-xs font-black uppercase text-slate-400 mb-2 tracking-widest">Product Image</label>
+            <input type="file" name="product_image" accept="image/jpeg,image/png,image/webp,image/gif"
                    class="w-full px-5 py-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-black transition-all">
-            <p class="text-[10px] text-slate-400 mt-2 italic">Ensure file exists in assets/images/</p>
+            <p class="text-[10px] text-slate-400 mt-2 italic">The filename is saved in the products table and the file is stored in assets/images/.</p>
         </div>
 
         <div>

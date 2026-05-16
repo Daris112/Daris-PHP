@@ -1,6 +1,7 @@
 <?php
 // 1. DATABASE AND LOGIC FIRST
 include('includes/connect.php');
+include('../includes/product_images.php');
 
 // Check for Product ID
 if (!isset($_GET['id'])) {
@@ -29,10 +30,16 @@ if (isset($_POST['update_product'])) {
     $name = trim($_POST['name']);
     $category_id = $_POST['category_id']; // Using ID to maintain foreign key integrity
     $price = $_POST['price'];
-    $image_url = trim($_POST['image_url']);
     $description = trim($_POST['description']);
+    $uploadError = null;
+    $uploadedImage = product_image_filename_from_upload('product_image', $uploadError);
 
-    try {
+    if ($uploadedImage === false) {
+        $error = $uploadError;
+    } else {
+        $image_url = $uploadedImage ?? $product['image_url'];
+
+        try {
         // Query targets the products table from your SQL dump[cite: 1]
         $query = "UPDATE products SET 
                     name = :name, 
@@ -54,8 +61,9 @@ if (isset($_POST['update_product'])) {
 
         header("Location: inventory.php?msg=updated");
         exit();
-    } catch (PDOException $e) {
-        $error = "Update failed: " . $e->getMessage();
+        } catch (PDOException $e) {
+            $error = "Update failed: " . $e->getMessage();
+        }
     }
 }
 
@@ -77,7 +85,7 @@ include('includes/header.php');
         </div>
     <?php endif; ?>
 
-    <form method="POST" class="space-y-6">
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
         <div>
             <label class="block text-xs font-black uppercase text-slate-400 mb-2 tracking-widest">Product Name</label>
             <input type="text" name="name" required value="<?php echo htmlspecialchars($product['name']); ?>"
@@ -103,9 +111,16 @@ include('includes/header.php');
         </div>
 
         <div>
-            <label class="block text-xs font-black uppercase text-slate-400 mb-2 tracking-widest">Image Filename</label>
-            <input type="text" name="image_url" value="<?php echo htmlspecialchars($product['image_url']); ?>"
+            <label class="block text-xs font-black uppercase text-slate-400 mb-2 tracking-widest">Product Image</label>
+            <?php if (!empty($product['image_url'])): ?>
+                <div class="mb-3 flex items-center gap-3 text-xs font-bold text-slate-500">
+                    <img src="<?php echo htmlspecialchars(product_image_src($product['image_url'], '../')); ?>" class="w-14 h-14 rounded-xl object-cover bg-slate-100" alt="">
+                    <span><?php echo htmlspecialchars($product['image_url']); ?></span>
+                </div>
+            <?php endif; ?>
+            <input type="file" name="product_image" accept="image/jpeg,image/png,image/webp,image/gif"
                    class="w-full px-5 py-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-black transition-all">
+            <p class="text-[10px] text-slate-400 mt-2 italic">Choose a new file only if you want to replace the current image.</p>
         </div>
 
         <div>

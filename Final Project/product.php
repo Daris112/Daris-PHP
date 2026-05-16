@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require_once 'admin/includes/connect.php'; 
+require_once 'includes/product_images.php';
 include 'includes/header.php'; 
 
 $product_id = (int)($_GET['id'] ?? 0);
@@ -22,7 +23,11 @@ if (!$product) {
     <div class="product-layout">
         <div class="product-gallery">
             <div class="main-image-wrapper">
-                <img src="assets/img/<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                <?php if (!empty($product['image_url'])): ?>
+                    <img src="<?php echo htmlspecialchars(product_image_src($product['image_url'])); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                <?php else: ?>
+                    <span class="product-placeholder"><?php echo htmlspecialchars(substr($product['name'], 0, 1)); ?></span>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -55,7 +60,7 @@ if (!$product) {
                     data-id="<?php echo htmlspecialchars($product['id']); ?>" 
                     data-name="<?php echo htmlspecialchars($product['name']); ?>" 
                     data-price="<?php echo htmlspecialchars($product['price']); ?>" 
-                    data-image="assets/img/<?php echo htmlspecialchars($product['image_url']); ?>"
+                    data-image="<?php echo htmlspecialchars(product_image_src($product['image_url'])); ?>"
                     type="button">
                 ADD TO BAG
             </button>

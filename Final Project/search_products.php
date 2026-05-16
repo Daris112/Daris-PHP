@@ -1,5 +1,6 @@
 <?php
 require_once 'admin/includes/connect.php';
+require_once 'includes/product_images.php';
 
 header('Content-Type: application/json');
 
@@ -22,7 +23,13 @@ try {
     );
     $stmt->execute(array($search, $search, $search));
 
-    echo json_encode($stmt->fetchAll());
+    $products = $stmt->fetchAll();
+
+    foreach ($products as &$product) {
+        $product['image_src'] = product_image_src($product['image_url']);
+    }
+
+    echo json_encode($products);
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(array('error' => 'Search failed'));

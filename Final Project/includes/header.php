@@ -33,6 +33,7 @@ $searchQuery = trim($_GET['q'] ?? '');
             <a href="shop.php">SHOP ALL</a>
             <a href="shop.php?category=1">WOMEN</a>
             <a href="shop.php?category=2">MEN</a>
+            <a href="shop.php?category=3">ACCESSORIES</a>
         </div>
         
         <div class="logo"><a href="index.php">MAISON</a></div>
@@ -144,9 +145,9 @@ $searchQuery = trim($_GET['q'] ?? '');
                 results.innerHTML = products.map(function(product) {
                     const name = escapeHtml(product.name);
                     const category = escapeHtml(product.category_name || 'Product');
-                    const image = product.image_url ? 'assets/img/' + encodeURIComponent(product.image_url) : '';
+                    const image = product.image_src || '';
                     const imageMarkup = image
-                        ? '<img src="' + image + '" alt="">'
+                        ? '<img src="' + escapeHtml(image) + '" alt="">'
                         : '<span class="search-result-placeholder">' + name.charAt(0).toUpperCase() + '</span>';
 
                     return '' +

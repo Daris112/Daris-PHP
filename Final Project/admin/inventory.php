@@ -1,5 +1,6 @@
 <?php
 include('includes/connect.php');
+include('../includes/product_images.php');
 include('includes/header.php');
 
 // Fetch all products with their category names using a JOIN
@@ -54,7 +55,7 @@ try {
                         <div class="flex items-center gap-4">
                             <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-50">
                                 <?php if(!empty($row['image_url'])): ?>
-                                    <img src="assets/images/<?php echo htmlspecialchars($row['image_url']); ?>" class="w-full h-full object-cover">
+                                    <img src="<?php echo htmlspecialchars(product_image_src($row['image_url'], '../')); ?>" class="w-full h-full object-cover" alt="">
                                 <?php else: ?>
                                     <i class="fas fa-tshirt text-slate-300"></i>
                                 <?php endif; ?>

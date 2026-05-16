@@ -13,6 +13,7 @@ if (!isset($_SESSION['user_id']) || $role !== 'admin') {
 // 2. Inclusion of UI and Database
 // Ensure these paths are correct relative to the admin folder
 include('includes/connect.php'); 
+include('../includes/product_images.php');
 include('includes/header.php'); 
 
 // 3. Fetch Dashboard Statistics
@@ -102,7 +103,7 @@ try {
                                     <div class="flex items-center gap-4">
                                         <div class="w-10 h-10 bg-slate-100 rounded-lg overflow-hidden flex items-center justify-center">
                                             <?php if (!empty($item['image_url'])): ?>
-                                                <img src="../assets/img/<?php echo htmlspecialchars($item['image_url']); ?>" class="w-full h-full object-cover">
+                                                <img src="<?php echo htmlspecialchars(product_image_src($item['image_url'], '../')); ?>" class="w-full h-full object-cover" alt="">
                                             <?php else: ?>
                                                 <i class="fas fa-image text-slate-400 text-xs"></i>
                                             <?php endif; ?>

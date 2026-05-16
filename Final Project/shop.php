@@ -2,6 +2,7 @@
 session_start();
 // Database connection
 require_once 'admin/includes/connect.php'; 
+require_once 'includes/product_images.php';
 include 'includes/header.php'; 
 
 // 1. Logic: Get current category for the header and filtering
@@ -165,13 +166,17 @@ $products = $stmt->fetchAll();
                     <div class="product-item">
                         <div class="image-container">
                             <a href="product.php?id=<?php echo htmlspecialchars($product['id']); ?>" class="product-image-link">
-                                <img src="assets/img/<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                <?php if (!empty($product['image_url'])): ?>
+                                    <img src="<?php echo htmlspecialchars(product_image_src($product['image_url'])); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                <?php else: ?>
+                                    <span class="product-placeholder"><?php echo htmlspecialchars(substr($product['name'], 0, 1)); ?></span>
+                                <?php endif; ?>
                             </a>
                             <button class="add-to-cart-btn" 
                                     data-id="<?php echo htmlspecialchars($product['id']); ?>" 
                                     data-name="<?php echo htmlspecialchars($product['name']); ?>" 
                                     data-price="<?php echo htmlspecialchars($product['price']); ?>" 
-                                    data-image="assets/img/<?php echo htmlspecialchars($product['image_url']); ?>"
+                                    data-image="<?php echo htmlspecialchars(product_image_src($product['image_url'])); ?>"
                                     type="button">
                                 + ADD TO CART
                             </button>

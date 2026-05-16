@@ -130,7 +130,11 @@
                 <tr class="cart-item">
                     <td>
                         <div class="item-info">
-                            <img src="<?php echo $item['image']; ?>" class="item-image">
+                            <?php if (!empty($item['image'])): ?>
+                                <img src="<?php echo htmlspecialchars($item['image']); ?>" class="item-image" alt="">
+                            <?php else: ?>
+                                <span class="item-image"></span>
+                            <?php endif; ?>
                             <div class="item-details">
                                 <h3><?php echo $item['name']; ?></h3>
                                 <p>Ref. #<?php echo $item['id']; ?></p>
