@@ -9,6 +9,17 @@ include 'includes/header.php';
 $current_cat_id = isset($_GET['category']) ? $_GET['category'] : null;
 $search_query = trim($_GET['q'] ?? '');
 $selected_price_filters = $_GET['price'] ?? array();
+$selected_sort = $_GET['sort'] ?? 'newest';
+
+$sort_options = array(
+    'newest' => array('label' => 'NEWEST', 'sql' => 'p.id DESC'),
+    'price_asc' => array('label' => 'PRICE: LOW TO HIGH', 'sql' => 'p.price ASC, p.id DESC'),
+    'price_desc' => array('label' => 'PRICE: HIGH TO LOW', 'sql' => 'p.price DESC, p.id DESC')
+);
+
+if (!isset($sort_options[$selected_sort])) {
+    $selected_sort = 'newest';
+}
 
 if (!is_array($selected_price_filters)) {
     $selected_price_filters = array($selected_price_filters);
@@ -23,7 +34,7 @@ $price_ranges = array(
 
 $selected_price_filters = array_values(array_intersect($selected_price_filters, array_keys($price_ranges)));
 
-function buildShopUrl($categoryId, $searchQuery, $priceFilters) {
+function buildShopUrl($categoryId, $searchQuery, $priceFilters, $sort) {
     $query = array();
 
     if ($categoryId) {
@@ -36,6 +47,10 @@ function buildShopUrl($categoryId, $searchQuery, $priceFilters) {
 
     foreach ($priceFilters as $priceFilter) {
         $query['price'][] = $priceFilter;
+    }
+
+    if ($sort !== 'newest') {
+        $query['sort'] = $sort;
     }
 
     $queryString = http_build_query($query);
@@ -92,7 +107,7 @@ if (!empty($where)) {
     $sql .= " WHERE " . implode(" AND ", $where);
 }
 
-$sql .= " ORDER BY p.id DESC";
+$sql .= " ORDER BY " . $sort_options[$selected_sort]['sql'];
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
@@ -114,13 +129,13 @@ $products = $stmt->fetchAll();
             <div class="filter-list">
                 <label class="filter-option">
                     <input type="checkbox" <?php echo !$current_cat_id ? 'checked' : ''; ?> 
-                           onclick="window.location.href='<?php echo htmlspecialchars(buildShopUrl(null, $search_query, $selected_price_filters)); ?>'">
+                           onclick="window.location.href='<?php echo htmlspecialchars(buildShopUrl(null, $search_query, $selected_price_filters, $selected_sort)); ?>'">
                     <span class="custom-check"></span> All
                 </label>
                 <?php foreach ($categories as $cat): ?>
                     <label class="filter-option">
                         <input type="checkbox" <?php echo ($current_cat_id == $cat['id']) ? 'checked' : ''; ?> 
-                               onclick="window.location.href='<?php echo htmlspecialchars(buildShopUrl($cat['id'], $search_query, $selected_price_filters)); ?>'">
+                               onclick="window.location.href='<?php echo htmlspecialchars(buildShopUrl($cat['id'], $search_query, $selected_price_filters, $selected_sort)); ?>'">
                         <span class="custom-check"></span> <?php echo $cat['name']; ?>
                     </label>
                 <?php endforeach; ?>
@@ -143,7 +158,7 @@ $products = $stmt->fetchAll();
                     <label class="filter-option">
                         <input type="checkbox"
                                <?php echo in_array($price_key, $selected_price_filters) ? 'checked' : ''; ?>
-                               onclick="window.location.href='<?php echo htmlspecialchars(buildShopUrl($current_cat_id, $search_query, $updated_price_filters)); ?>'">
+                               onclick="window.location.href='<?php echo htmlspecialchars(buildShopUrl($current_cat_id, $search_query, $updated_price_filters, $selected_sort)); ?>'">
                         <span class="custom-check"></span> <?php echo htmlspecialchars($price_range['label']); ?>
                     </label>
                 <?php endforeach; ?>
@@ -153,10 +168,13 @@ $products = $stmt->fetchAll();
 
     <main class="shop-content">
         <div class="shop-utils">
-            <select class="sort-select">
-                <option>NEWEST</option>
-                <option>PRICE: LOW TO HIGH</option>
-                <option>PRICE: HIGH TO LOW</option>
+            <select class="sort-select" onchange="window.location.href=this.value">
+                <?php foreach ($sort_options as $sort_key => $sort_option): ?>
+                    <option value="<?php echo htmlspecialchars(buildShopUrl($current_cat_id, $search_query, $selected_price_filters, $sort_key)); ?>"
+                            <?php echo $selected_sort === $sort_key ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($sort_option['label']); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
 

@@ -28,7 +28,7 @@ $searchQuery = trim($_GET['q'] ?? '');
     </div>
     
     <nav class="main-nav">
-        <div class="nav-links">
+        <div class="nav-links" id="primary-navigation">
             <a href="index.php">HOME</a>
             <a href="shop.php">SHOP ALL</a>
             <a href="shop.php?category=1">WOMEN</a>
@@ -37,8 +37,14 @@ $searchQuery = trim($_GET['q'] ?? '');
         </div>
         
         <div class="logo"><a href="index.php">MAISON</a></div>
+
+        <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation mobile-nav-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         
-        <div class="nav-icons">
+        <div class="nav-icons" id="mobile-nav-menu">
             <form action="shop.php" method="GET" class="nav-search" role="search">
                 <?php if (isset($_GET['category'])): ?>
                     <input type="hidden" name="category" value="<?php echo htmlspecialchars($_GET['category']); ?>">
@@ -52,6 +58,9 @@ $searchQuery = trim($_GET['q'] ?? '');
                 <?php foreach ($activePriceFilters as $activePriceFilter): ?>
                     <input type="hidden" name="price[]" value="<?php echo htmlspecialchars($activePriceFilter); ?>">
                 <?php endforeach; ?>
+                <?php if (isset($_GET['sort']) && $_GET['sort'] !== 'newest'): ?>
+                    <input type="hidden" name="sort" value="<?php echo htmlspecialchars($_GET['sort']); ?>">
+                <?php endif; ?>
                 <input
                     type="search"
                     name="q"
@@ -106,6 +115,39 @@ $searchQuery = trim($_GET['q'] ?? '');
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const mainNav = document.querySelector('.main-nav');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+
+            if (mainNav && menuToggle) {
+                function closeMobileMenu() {
+                    mainNav.classList.remove('is-open');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    menuToggle.setAttribute('aria-label', 'Open navigation menu');
+                }
+
+                menuToggle.addEventListener('click', function() {
+                    const isOpen = mainNav.classList.toggle('is-open');
+                    menuToggle.setAttribute('aria-expanded', String(isOpen));
+                    menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+                });
+
+                mainNav.querySelectorAll('.nav-links a, .nav-icons a').forEach(function(link) {
+                    link.addEventListener('click', closeMobileMenu);
+                });
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        closeMobileMenu();
+                    }
+                });
+
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 900) {
+                        closeMobileMenu();
+                    }
+                });
+            }
+
             const searchForm = document.querySelector('.nav-search');
             if (!searchForm) return;
 

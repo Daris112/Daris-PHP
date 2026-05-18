@@ -4,7 +4,7 @@ include 'admin/includes/connect.php';
 include 'includes/product_images.php';
 include 'includes/header.php'; 
 
-$latestStmt = $pdo->query("SELECT * FROM products ORDER BY id DESC LIMIT 4");
+$latestStmt = $pdo->query("SELECT * FROM products ORDER BY id DESC LIMIT 6");
 $latestProducts = $latestStmt->fetchAll();
 
 $categoryStmt = $pdo->query("
@@ -21,23 +21,26 @@ $homeCategories = $categoryStmt->fetchAll();
 <header class="hero">
     <div class="hero-content">
         <span class="label">NEW SEASON</span>
-        <h1>SUMMER COLLECTION 2025</h1>
+        <h1>SUMMER COLLECTION 2026</h1>
         <p>Effortless style for every moment. Discover pieces that move with you.</p>
         <a href="shop.php" class="btn-primary">SHOP NOW</a>
     </div>
     <div class="hero-showcase" aria-label="Collection highlights">
-        <div class="hero-showcase-panel hero-showcase-large">
+        <a href="shop.php?category=1" class="hero-showcase-panel hero-showcase-large">
+            <img src="assets/images/IMG_5634.jpg" alt="White tailored summer outfit with accessories">
             <span>01</span>
-            <strong>Clean silhouettes</strong>
-        </div>
-        <div class="hero-showcase-panel">
+            <strong>White tailoring</strong>
+        </a>
+        <a href="shop.php" class="hero-showcase-panel hero-showcase-texture">
+            <img src="assets/images/IMG_5635.jpg" alt="Close detail of soft woven fabric">
             <span>02</span>
-            <strong>Everyday layers</strong>
-        </div>
-        <div class="hero-showcase-panel">
-            <span>03</span>
             <strong>Soft textures</strong>
-        </div>
+        </a>
+        <a href="shop.php?category=3" class="hero-showcase-panel hero-showcase-detail">
+            <img src="assets/images/IMG_5634%20(1).jpg" alt="Accessories styled with a white outfit">
+            <span>03</span>
+            <strong>Finishing pieces</strong>
+        </a>
     </div>
 </header>
 
